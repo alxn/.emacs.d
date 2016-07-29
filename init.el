@@ -15,6 +15,13 @@
 (set-background-color "black")
 (set-foreground-color "white")
 
+(require 'ansi-color)
+(defun colorize-compilation-buffer ()
+  (toggle-read-only)
+  (ansi-color-apply-on-region compilation-filter-start (point))
+  (toggle-read-only))
+(add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+
 ;; Code styles
 (load-file "~/.emacs.d/c-setup.el")
 
@@ -34,9 +41,26 @@
 ;; SGML styles
 (load-file "~/.emacs.d/sgml-setup.el")
 
-;; xcscope from HomeBrew.
+;; From HomeBrew.
 (require 'xcscope)
 (setq cscope-do-not-update-database t)
+
+(require 'company)
+(require 'flycheck)
+(require 'json-mode)
+(require 'markdown-mode)
+
+(require 'electric-spacing)
+(require 'git-messenger)
+(setq git-messenger:show-detail t)
+
+(require 'helm)
+(require 'emoji-cheat-sheet-plus)
+(require 'gh)
+(require 'gist)
+(require 'git-modes)
+
+;; End From HomeBrew.
 
 ;; backups
 (load-file "~/.emacs.d/backups.el")
@@ -49,9 +73,6 @@
 
 ;; doxymacs
 (load-file "~/.emacs.d/doxymacs.el")
-
-;; markdown
-(load-file "~/.emacs.d/markdown.el")
 
 (require 'boxquote)
 
@@ -86,17 +107,18 @@
 						 *init-start-time*))))
 
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(inhibit-startup-screen t)
  '(initial-major-mode (quote text-mode))
+ '(sgml-basic-offset 2)
  '(user-full-name "Alun Evans")
  '(user-mail-address "alun.evans@xockets.com"))
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  )

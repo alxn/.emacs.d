@@ -8,14 +8,14 @@
 
 (add-hook 'nxml-mode-hook
           (lambda ()
-	    (setq nxml-child-indent 4)
+	    (setq nxml-child-indent 2)
             (setq indent-tabs-mode nil)
 	    )
 	  )
 
 (add-hook 'sgml-mode-hook
           (lambda ()
-	    (setq sgml-basic-offset 4)
+	    (setq sgml-basic-offset 2)
             (setq indent-tabs-mode nil)
 	    )
 	  )
