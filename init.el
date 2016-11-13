@@ -59,6 +59,7 @@
 (require 'gh)
 (require 'gist)
 (require 'git-modes)
+(require 'go-mode-autoloads)
 
 ;; End From HomeBrew.
 
