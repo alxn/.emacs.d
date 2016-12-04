@@ -3,5 +3,7 @@
 auto-save-list/
 cache/
 elpa/
+.cask/
 tramp
 network-security.data
+ac-comphist.dat

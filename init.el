@@ -1,14 +1,6 @@
 ;; Save the starting time...
 (defvar *init-start-time* (current-time))
 
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-(require 'package)
-(package-initialize)
-;(package-refresh-contents)
-
 (setq load-path
       (append
        (list "~/.emacs.d/elisp/"
@@ -16,8 +8,10 @@
 	     "~/.local/share/emacs/site-lisp/")
        load-path))
 
-(setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-                         ("melpa" . "https://melpa.org/packages/")))
+(require 'cask "/usr/local/share/emacs/site-lisp/cask/cask.el")
+(cask-initialize)
+(require `pallet)
+(pallet-mode t)
 
 ;; no obnoxious tool bar
 (if (fboundp 'tool-bar-mode)
@@ -139,7 +133,7 @@
  '(initial-major-mode (quote text-mode))
  '(package-selected-packages
    (quote
-    (golint exec-path-from-shell flycheck flycheck-plantuml go-rename go-impl go-errcheck go-eldoc go-dlv go-complete go-autocomplete go-guru go-mode)))
+    (go-dlv go-eldoc flycheck-plantuml exec-path-from-shell flycheck go-autocomplete go-complete go-errcheck go-gopath go-guru go-impl go-mode go-rename go-scratch golint pallet)))
  '(sgml-basic-offset 2)
  '(user-full-name "Alun Evans")
  '(user-mail-address "alun.evans@xockets.com"))
