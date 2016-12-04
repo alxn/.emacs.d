@@ -99,6 +99,9 @@
 ;; set up a bunch of auto-mode-alist stuff
 (load-file "~/.emacs.d/auto-mode-alist-setup.el")
 
+(add-to-list 'load-path "~/.emacs.d/hyde/")
+(require 'hyde)
+
 ;; Get the end time.
 (defvar *init-end-time* (current-time))
 ;; Print init time.
