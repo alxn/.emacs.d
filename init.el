@@ -1,4 +1,11 @@
 ;; Save the starting time...
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
 (defvar *init-start-time* (current-time))
 
 (setq load-path
@@ -7,6 +14,9 @@
 	     "/usr/local/share/emacs/site-lisp/"
 	     "~/.local/share/emacs/site-lisp/")
        load-path))
+
+(setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+                         ("melpa" . "https://melpa.org/packages/")))
 
 ;; no obnoxious tool bar
 (if (fboundp 'tool-bar-mode)
@@ -117,6 +127,7 @@
  ;; If there is more than one, they won't work right.
  '(inhibit-startup-screen t)
  '(initial-major-mode (quote text-mode))
+ '(package-selected-packages (quote (go-mode)))
  '(sgml-basic-offset 2)
  '(user-full-name "Alun Evans")
  '(user-mail-address "alun.evans@xockets.com"))

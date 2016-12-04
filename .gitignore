@@ -2,5 +2,6 @@
 
 auto-save-list/
 cache/
-elpa/gnupg/
+elpa/
 tramp
+network-security.data
