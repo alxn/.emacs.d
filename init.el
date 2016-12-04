@@ -1,12 +1,13 @@
 ;; Save the starting time...
+(defvar *init-start-time* (current-time))
 
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
+(require 'package)
 (package-initialize)
-
-(defvar *init-start-time* (current-time))
+;(package-refresh-contents)
 
 (setq load-path
       (append
@@ -57,6 +58,9 @@
 
 (require 'company)
 (require 'flycheck)
+
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
 (require 'json-mode)
 (require 'markdown-mode)
 
@@ -69,7 +73,6 @@
 (require 'gh)
 (require 'gist)
 (require 'git-modes)
-(require 'go-mode-autoloads)
 
 ;; End From HomeBrew.
 
@@ -112,6 +115,13 @@
 (add-to-list 'load-path "~/.emacs.d/hyde/")
 (require 'hyde)
 
+(with-eval-after-load 'flycheck
+  (require 'flycheck-plantuml)
+  (flycheck-plantuml-setup))
+
+;; Go Lang
+(load-file "~/.emacs.d/go-setup.el")
+
 ;; Get the end time.
 (defvar *init-end-time* (current-time))
 ;; Print init time.
@@ -127,7 +137,9 @@
  ;; If there is more than one, they won't work right.
  '(inhibit-startup-screen t)
  '(initial-major-mode (quote text-mode))
- '(package-selected-packages (quote (go-mode)))
+ '(package-selected-packages
+   (quote
+    (exec-path-from-shell flycheck flycheck-plantuml go-rename go-impl go-errcheck go-eldoc go-dlv go-complete go-autocomplete go-guru go-mode)))
  '(sgml-basic-offset 2)
  '(user-full-name "Alun Evans")
  '(user-mail-address "alun.evans@xockets.com"))
