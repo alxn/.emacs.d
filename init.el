@@ -139,7 +139,7 @@
  '(initial-major-mode (quote text-mode))
  '(package-selected-packages
    (quote
-    (exec-path-from-shell flycheck flycheck-plantuml go-rename go-impl go-errcheck go-eldoc go-dlv go-complete go-autocomplete go-guru go-mode)))
+    (golint exec-path-from-shell flycheck flycheck-plantuml go-rename go-impl go-errcheck go-eldoc go-dlv go-complete go-autocomplete go-guru go-mode)))
  '(sgml-basic-offset 2)
  '(user-full-name "Alun Evans")
  '(user-mail-address "alun.evans@xockets.com"))
