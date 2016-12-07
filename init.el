@@ -1,9 +1,11 @@
+;;; package --- Summary:
+;;; Commentary:
 ;; Save the starting time...
-
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
+;;; Code:
 (package-initialize)
 
 (defvar *init-start-time* (current-time))
@@ -89,8 +91,6 @@
 ;; doxymacs
 (load-file "~/.emacs.d/doxymacs.el")
 
-(require 'boxquote)
-
 (put 'narrow-to-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
@@ -140,7 +140,7 @@
  '(initial-major-mode (quote text-mode))
  '(package-selected-packages
    (quote
-    (go-dlv go-eldoc flycheck-plantuml exec-path-from-shell flycheck go-autocomplete go-complete go-errcheck go-gopath go-guru go-impl go-mode go-rename go-scratch golint pallet)))
+    (boxquote confluence xml-rpc go-dlv go-eldoc flycheck-plantuml exec-path-from-shell flycheck go-autocomplete go-complete go-errcheck go-gopath go-guru go-impl go-mode go-rename go-scratch golint pallet)))
  '(sgml-basic-offset 2)
  '(user-full-name "Alun Evans")
  '(user-mail-address "alun.evans@xockets.com"))
