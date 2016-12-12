@@ -6,9 +6,9 @@
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
 ;;; Code:
-(package-initialize)
 
-(defvar *init-start-time* (current-time))
+;; Setup the packaging system.
+(package-initialize)
 
 (setq load-path
       (append
@@ -22,6 +22,11 @@
 (require `pallet)
 (pallet-mode t)
 
+;; See where we spend out time.
+;; Use M-x benchmark-init/show-durations-<TAB>
+;(require 'benchmark-init)
+;(benchmark-init/activate)
+
 ;; no obnoxious tool bar
 (if (fboundp 'tool-bar-mode)
     (tool-bar-mode -1))
@@ -29,12 +34,21 @@
 (set-background-color "black")
 (set-foreground-color "white")
 
+;;; Nice size for the default window
+(defun get-default-height ()
+  "Get the default hight for the window."
+  (/ (- (display-pixel-height) 120)
+     (frame-char-height)))
+
+(add-to-list 'default-frame-alist '(width . 80))
+(add-to-list 'default-frame-alist (cons 'height (get-default-height)))
+
 (require 'ansi-color)
-(defun colorize-compilation-buffer ()
-  (toggle-read-only)
-  (ansi-color-apply-on-region compilation-filter-start (point))
-  (toggle-read-only))
-(add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+;; (defun colorize-compilation-buffer ()
+;;   (toggle-read-only)
+;;   (ansi-color-apply-on-region compilation-filter-start (point))
+;;   (toggle-read-only))
+;; (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
 
 ;; Code styles
 (load-file "~/.emacs.d/c-setup.el")
@@ -107,6 +121,8 @@
 ; http://superuser.com/questions/277956/emacs-variable-to-open-with-in-original-frame
 (setq ns-pop-up-frames nil)
 
+
+(setenv "DICTIONARY" "en_GB")
 ;; Spelling
 (load-file "~/.emacs.d/spell.el")
 
@@ -123,14 +139,6 @@
 ;; Go Lang
 (load-file "~/.emacs.d/go-setup.el")
 
-;; Get the end time.
-(defvar *init-end-time* (current-time))
-;; Print init time.
-(message "Init took %d seconds"
-         (- (+ (lsh (car *init-end-time*) 16) (cadr *init-end-time*))
-	    (+ (lsh (car *init-start-time*) 16) (cadr
-						 *init-start-time*))))
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -140,13 +148,17 @@
  '(initial-major-mode (quote text-mode))
  '(package-selected-packages
    (quote
-    (boxquote confluence xml-rpc go-dlv go-eldoc flycheck-plantuml exec-path-from-shell flycheck go-autocomplete go-complete go-errcheck go-gopath go-guru go-impl go-mode go-rename go-scratch golint pallet)))
+    (helm-bbdb helm-company helm-cscope helm-flycheck helm-flymake helm-flyspell helm-git helm-git-files helm-git-grep helm-ispell helm-package xcscope hyde json-mode plantuml-mode cask chef-mode company electric-spacing emoji-cheat-sheet-plus epl gh gist git git-commit git-messenger gitattributes-mode gitconfig gitconfig-mode magit magit-popup vagrant markdown-mode benchmark-init boxquote confluence xml-rpc go-dlv go-eldoc flycheck-plantuml flycheck go-autocomplete go-complete go-errcheck go-gopath go-guru go-impl go-mode go-rename go-scratch golint pallet)))
+ '(send-mail-function (quote smtpmail-send-it))
  '(sgml-basic-offset 2)
  '(user-full-name "Alun Evans")
- '(user-mail-address "alun.evans@xockets.com"))
+ '(user-mail-address "alun@uber.com"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+(provide 'init)
+;;; init.el ends here

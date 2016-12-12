@@ -2,7 +2,7 @@
 
 ;; c.f. http://inst.eecs.berkeley.edu/~cs47b/emacs/lisp/cc-mode/cc-styles.el
 
-(defconst xockets-c-style
+(defconst uber-c-style
   '((c-basic-offset . 4)
     (c-auto-newline)
     (comment-multi-line t)
@@ -14,7 +14,7 @@
      (substatement-open . 0)
      (label . 0)
      (case-label . 0)))
-  "Xockets C Style for CC-MODE")
+  "Uber C Style for CC-MODE")
 
 ;;
 ;; LwIP Style based on:
@@ -30,6 +30,13 @@
 ;; closing curly brace on a single line.
 ;; spaces surrounding assignment and comparisons.
 ;; use current source code style as further reference.
+(setq load-path
+      (append
+       (list "~/.emacs.d/elisp/"
+	     "/usr/local/share/emacs/site-lisp/"
+	     "~/.local/share/emacs/site-lisp/")
+       load-path))
+
 ;;
 (defconst lwip-c-style
   '("lwip"
@@ -41,9 +48,9 @@
 
 (add-hook 'c-mode-common-hook
           (lambda ()
-            ;; Add Xockets style
+            ;; Add Uber style
             (c-add-style
-             "XOCKETS" xockets-c-style)))
+             "UBER" uber-c-style)))
 
 ;;
 ;; Linux style as required in Documentation/CodingStyle

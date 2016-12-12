@@ -1,12 +1,14 @@
+;;; package -- Summary
+;;; Commentary:
+;;; Code:
+
 (require 'go-mode)
 (add-hook 'go-mode-hook 'flycheck-mode)
 (require 'go-autocomplete)
 (require 'auto-complete-config)
 (ac-config-default)
 
-(when (memq window-system '(mac ns))
-  (exec-path-from-shell-initialize)
-  (exec-path-from-shell-copy-env "GOPATH"))
+(add-hook 'before-save-hook 'gofmt-before-save)
 
 (define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
 
@@ -25,3 +27,6 @@
 
 (go-guru-hl-identifier-mode)
 (add-hook 'go-mode-hook #'go-guru-hl-identifier-mode)
+
+(provide 'go-setup)
+;;; go-setup.el ends here
