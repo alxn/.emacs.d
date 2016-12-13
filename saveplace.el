@@ -1,19 +1,23 @@
-;; saveplace: save location in file when saving files
+;;; saveplace -- save location in file when saving files
+;;; Commentary:
+;;; Code:
+
 (require 'saveplace)                   ;; get the package
-(setq
- save-place-file (format "~/.emacs.d/cache/saveplace.%s"
-			 (getenv "HOSTNAME"))
- save-place-limit 10)
+(save-place-mode 1)
+(setq save-place-forget-unreadable-files nil)
+
 (setq-default save-place t)            ;; activate it for all buffers
 
-(if (>= emacs-major-version '22)
-    ;;
-    ;; savehist: save some history
-    (require 'savehist)
-    (setq savehist-additional-variables    ;; also save...
-	  '(search ring regexp-search-ring);; ... my search entries
-	  savehist-autosave-interval 60    ;; save every minute (default: 5 min)
-	  savehist-file (format "~/.emacs.d/cache/savehist.%s"
-				(getenv "HOSTNAME"))) ;; keep my home clean
-	  (savehist-mode t)                ;; do customization before activation
-)
+(setq save-place-file "~/.emacs.d/cache/places")
+
+(require 'savehist)
+(setq savehist-additional-variables    ;; also save...
+      '(search ring regexp-search-ring);; ... my search entries
+      savehist-autosave-interval 60    ;; save every minute (default: 5 min)
+      savehist-file "~/.emacs.d/cache/history"
+       ) ;; keep my home clean
+
+(savehist-mode t)                ;; do customization before activation
+
+(provide 'saveplace)
+;;; saveplace.el ends here

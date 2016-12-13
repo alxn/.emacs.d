@@ -17,6 +17,10 @@
 	     "~/.local/share/emacs/site-lisp/")
        load-path))
 
+(setenv "PATH" (concat (getenv "PATH") "/usr/local/bin:/Users/alun/gocode/bin"))
+(setq exec-path (append exec-path '("/Users/alun/gocode/bin")))
+(setq exec-path (append exec-path '("/usr/local/bin")))
+
 (require 'cask "/usr/local/share/emacs/site-lisp/cask/cask.el")
 (cask-initialize)
 (require `pallet)

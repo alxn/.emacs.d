@@ -1,5 +1,4 @@
 # emacs.d Ignores.
-backups/
 auto-save-list/
 cache/
 elpa/
