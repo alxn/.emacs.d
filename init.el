@@ -133,9 +133,6 @@
 ;; set up a bunch of auto-mode-alist stuff
 (load-file "~/.emacs.d/auto-mode-alist-setup.el")
 
-(add-to-list 'load-path "~/.emacs.d/hyde/")
-(require 'hyde)
-
 (with-eval-after-load 'flycheck
   (require 'flycheck-plantuml)
   (flycheck-plantuml-setup))
