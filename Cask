@@ -57,6 +57,7 @@
 (depends-on "markdown-mode")
 (depends-on "package-build")
 (depends-on "pallet")
+(depends-on "phabricator")
 (depends-on "plantuml-mode")
 (depends-on "s")
 (depends-on "shut-up")

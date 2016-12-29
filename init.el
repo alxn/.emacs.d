@@ -149,7 +149,7 @@
  '(initial-major-mode (quote text-mode))
  '(package-selected-packages
    (quote
-    (gnus-spotlight spotlight counsel-bbdb bbdb helm-bbdb helm-company helm-cscope helm-flycheck helm-flymake helm-flyspell helm-git helm-git-files helm-git-grep helm-ispell helm-package xcscope hyde json-mode plantuml-mode cask chef-mode company electric-spacing emoji-cheat-sheet-plus epl gh gist git git-commit git-messenger gitattributes-mode gitconfig gitconfig-mode magit magit-popup vagrant markdown-mode benchmark-init boxquote confluence xml-rpc go-dlv go-eldoc flycheck-plantuml flycheck go-autocomplete go-complete go-errcheck go-gopath go-guru go-impl go-mode go-rename go-scratch golint pallet)))
+    (phabricator gnus-spotlight spotlight counsel-bbdb bbdb helm-bbdb helm-company helm-cscope helm-flycheck helm-flymake helm-flyspell helm-git helm-git-files helm-git-grep helm-ispell helm-package xcscope hyde json-mode plantuml-mode cask chef-mode company electric-spacing emoji-cheat-sheet-plus epl gh gist git git-commit git-messenger gitattributes-mode gitconfig gitconfig-mode magit magit-popup vagrant markdown-mode benchmark-init boxquote confluence xml-rpc go-dlv go-eldoc flycheck-plantuml flycheck go-autocomplete go-complete go-errcheck go-gopath go-guru go-impl go-mode go-rename go-scratch golint pallet)))
  '(send-mail-function (quote smtpmail-send-it))
  '(sgml-basic-offset 2)
  '(url-cookie-file "~/.emacs.d/cache/cookies")
