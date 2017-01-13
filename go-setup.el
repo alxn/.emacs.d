@@ -46,5 +46,8 @@
 
 (add-hook 'go-mode-hook 'uber-go-mode-hook)
 
+; Spell check.
+(add-hook 'go-mode-hook 'flyspell-prog-mode)
+
 (provide 'go-setup)
 ;;; go-setup.el ends here

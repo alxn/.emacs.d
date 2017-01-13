@@ -140,6 +140,9 @@
 ;; Go Lang
 (load-file "~/.emacs.d/go-setup.el")
 
+; Should only be when in git, I guess.
+(define-key vc-prefix-map "f" `vc-git-grep)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
