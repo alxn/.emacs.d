@@ -48,11 +48,18 @@
 (add-to-list 'default-frame-alist (cons 'height (get-default-height)))
 
 (require 'ansi-color)
-;; (defun colorize-compilation-buffer ()
-;;   (toggle-read-only)
-;;   (ansi-color-apply-on-region compilation-filter-start (point))
-;;   (toggle-read-only))
-;; (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+(require 'compile)
+(defun alun/colorize-compilation ()
+  "Colorize from `compilation-filter-start' to `point'."
+  (let ((inhibit-read-only t))
+    (ansi-color-apply-on-region
+     compilation-filter-start (point))))
+
+(setq compilation-window-height '25)
+(setq compilation-scroll-output 'first-error)
+
+(add-hook 'compilation-filter-hook
+          'alun/colorize-compilation)
 
 ;; Code styles
 (load-file "~/.emacs.d/c-setup.el")
@@ -96,7 +103,6 @@
 ;(require 'git-modes)
 
 ;; End From HomeBrew.
-
 ;; backups
 (load-file "~/.emacs.d/backups.el")
 
@@ -143,6 +149,90 @@
 ; Should only be when in git, I guess.
 (define-key vc-prefix-map "f" `vc-git-grep)
 
+(require 'web-mode)
+(defun my-web-mode-hook ()
+  "Hooks for Web mode."
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq indent-tabs-mode nil)
+)
+(add-hook 'web-mode-hook 'my-web-mode-hook)
+
+(add-to-list 'auto-mode-alist '("\\.gohtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.gotmpl\\'" . web-mode))
+
+;(require 'gnus-start)
+;(setq gnus-init-file "~/.emacs.d/init-gnus.el")
+
+(require 'bbdb)
+(bbdb-initialize 'gnus 'message 'pgp)
+(bbdb-mua-auto-update-init 'gnus 'message 'pgp)
+
+(setq bbdb-message-all-addresses t ;; returns all mail addresses of a message.
+      bbdb-complete-mail-allow-cycling t ;; cycle mail addresses completing.
+      bbdb-update-records-p t ;; Search for existing, create if new.
+      bbdb-pop-up-layout 'one-line
+      bbdb-pop-up-window-size 0.1
+      bbdb-ignore-redundant-mails t)
+
+(defun alun-bbdb-quiet-save (record)
+  "Alun's quiet bbdb save for the new RECORD."
+  (bbdb-save nil t))
+
+(add-hook 'bbdb-create-hook 'alun-bbdb-quiet-save)
+
+(setq bbdb-auto-notes-rules
+      (list
+       '("Subject"    (".*" subjects 0))
+       '("User-Agent" (".*" mailer identity nil))
+       '("Date"       (".*" lastseen identity nil))
+       '("X-Mailer"      (".*" mailer 0))))
+
+; To disable automatic notes collection for some messages:
+(setq bbdb-auto-notes-ignore-headers
+      '((("Organization" . "^Gatewayed from\\|^Source only"))))
+
+(add-hook 'bbdb-notice-mail-hook 'bbdb-auto-notes)
+
+;; TODO:
+;; https://github.com/vincentbernat/dot.emacs/blob/cb2472ac4e7b8baac2e4499cf438e955430e9626/bbdb.conf.el
+;;   "Canonicalize SUBJECT."
+
+;; (defun alun-bbdb-trim-subjects (record)
+;;   "Remove all but the first 5 lines from the subjects in the notes field of a BBDB (RECORD)."
+;;   (let* ((sep (get 'subjects 'field-separator))
+;;          (foo (reverse
+;;                (split-string
+;;                 (or (bbdb-record-getprop record 'subjects) "")
+;;                 sep)))
+;;          (num-to-keep 5)
+;;          (new-subj ""))
+;;     (while (and (> num-to-keep 0) (> (length foo) 0))
+;;       (if (> (length (car foo)) 0)
+;;           (setq new-subj (concat (car foo)
+;;                                  (if (> (length new-subj) 0)
+;;                                      (concat sep new-subj)
+;;                                    ""))
+;;                 num-to-keep (- num-to-keep 1)))
+;;       (setq foo (cdr foo)))
+;;     (bbdb-record-putprop record 'subjects new-subj)))
+;; (add-hook 'bbdb-change-hook 'alun-bbdb-trim-subjects)
+
+;;; http://bbdb.sourceforge.net/bbdb.html#SEC61
+
+;;; If the variable bbdb/mail-auto-create-p is set to the symbol
+;;; bbdb-ignore-most-messages-hook, then the variable
+;;; bbdb-ignore-most-messages-alist will determine which messages
+;;; should have records automatically created for them. The format of
+;;; this alist is
+
+;;; Alist describing which messages not to automatically create BBDB records for.
+(setq bbdb-ignore-message-alist
+      '(("From" . "github")
+	("To" . "github")
+	("From" . "@docs.google.com")
+	("From" . "phab@code.uberinternal.com")))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -152,7 +242,7 @@
  '(initial-major-mode (quote text-mode))
  '(package-selected-packages
    (quote
-    (phabricator gnus-spotlight spotlight counsel-bbdb bbdb helm-bbdb helm-company helm-cscope helm-flycheck helm-flymake helm-flyspell helm-git helm-git-files helm-git-grep helm-ispell helm-package xcscope hyde json-mode plantuml-mode cask chef-mode company electric-spacing emoji-cheat-sheet-plus epl gh gist git git-commit git-messenger gitattributes-mode gitconfig gitconfig-mode magit magit-popup vagrant markdown-mode benchmark-init boxquote confluence xml-rpc go-dlv go-eldoc flycheck-plantuml flycheck go-autocomplete go-complete go-errcheck go-gopath go-guru go-impl go-mode go-rename go-scratch golint pallet)))
+    (protobuf-mode thrift go-direx project-explorer web-mode cov editorconfig sr-speedbar all-the-icons all-the-icons-dired neotree minimap phabricator gnus-spotlight spotlight counsel-bbdb bbdb helm-bbdb helm-company helm-cscope helm-flycheck helm-flymake helm-flyspell helm-git helm-git-files helm-git-grep helm-ispell helm-package xcscope hyde json-mode plantuml-mode cask chef-mode company electric-spacing emoji-cheat-sheet-plus epl gh gist git git-commit git-messenger gitattributes-mode gitconfig gitconfig-mode magit magit-popup vagrant markdown-mode benchmark-init boxquote confluence xml-rpc go-dlv go-eldoc flycheck-plantuml flycheck go-autocomplete go-complete go-errcheck go-gopath go-guru go-impl go-mode go-rename go-scratch golint pallet)))
  '(send-mail-function (quote smtpmail-send-it))
  '(sgml-basic-offset 2)
  '(url-cookie-file "~/.emacs.d/cache/cookies")

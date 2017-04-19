@@ -5,7 +5,9 @@
 
 (require 'go-mode)
 (add-hook 'go-mode-hook 'flycheck-mode)
-(require 'go-autocomplete)
+;(require 'go-autocomplete)
+(with-eval-after-load 'go-mode
+  (require 'go-autocomplete))
 (require 'auto-complete-config)
 (ac-config-default)
 
@@ -46,8 +48,25 @@
 
 (add-hook 'go-mode-hook 'uber-go-mode-hook)
 
-; Spell check.
+;; Spell check.
 (add-hook 'go-mode-hook 'flyspell-prog-mode)
+
+;; Enable the project explorer side bar (don't forget about minimap-mode)
+;(add-hook 'go-mode-hook 'project-explorer-open)
+
+;; Make it readable.
+;(add-hook 'project-explorer-mode-hook 'hl-line-mode)
+
+;; also c.f. neotree-mode with neo-smart-open.
+;;(add-hook 'gnus-group-mode-hook 'hl-line-mode)
+;;https://www.emacswiki.org/emacs/SrSpeedbar
+;; http://cedet.sourceforge.net/speedbar.shtml
+;; lots of MODES.
+;; also neotree
+;; https://github.com/jaypei/emacs-neotree
+
+;; Need it for switching branches.
+(add-hook 'go-mode-hook 'global-auto-revert-mode)
 
 (provide 'go-setup)
 ;;; go-setup.el ends here
