@@ -61,6 +61,9 @@
 (add-hook 'compilation-filter-hook
           'alun/colorize-compilation)
 
+(add-hook 'Buffer-menu-mode-hook
+	  'hl-line-mode)
+
 ;; Code styles
 (load-file "~/.emacs.d/c-setup.el")
 
@@ -121,6 +124,15 @@
 
 (define-key esc-map "*" 'revert-buffer)
 (define-key esc-map "z" 'compile)
+
+;; org-mode
+(require 'org)
+(setq org-catch-invisible-edits 'show)
+
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-cc" 'org-capture)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
 
 (line-number-mode t)
 (column-number-mode t)
@@ -240,6 +252,7 @@
  ;; If there is more than one, they won't work right.
  '(inhibit-startup-screen t)
  '(initial-major-mode (quote text-mode))
+ '(org-agenda-files (quote ("/Users/alun/Documents/Org/")))
  '(package-selected-packages
    (quote
     (protobuf-mode thrift go-direx project-explorer web-mode cov editorconfig sr-speedbar all-the-icons all-the-icons-dired neotree minimap phabricator gnus-spotlight spotlight counsel-bbdb bbdb helm-bbdb helm-company helm-cscope helm-flycheck helm-flymake helm-flyspell helm-git helm-git-files helm-git-grep helm-ispell helm-package xcscope hyde json-mode plantuml-mode cask chef-mode company electric-spacing emoji-cheat-sheet-plus epl gh gist git git-commit git-messenger gitattributes-mode gitconfig gitconfig-mode magit magit-popup vagrant markdown-mode benchmark-init boxquote confluence xml-rpc go-dlv go-eldoc flycheck-plantuml flycheck go-autocomplete go-complete go-errcheck go-gopath go-guru go-impl go-mode go-rename go-scratch golint pallet)))

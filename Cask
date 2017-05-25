@@ -16,6 +16,7 @@
 (depends-on "counsel-bbdb")
 (depends-on "cov")
 (depends-on "dash")
+(depends-on "direx")
 (depends-on "editorconfig")
 (depends-on "electric-spacing")
 (depends-on "emoji-cheat-sheet-plus")
