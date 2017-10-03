@@ -93,20 +93,3 @@
 ;; (file-exists-p (concat
 ;; 		(file-name-directory filename)
 ;; 		"Kbuild"))
-
-(add-hook 'c-mode-hook
-          (lambda ()
-            (let ((filename (buffer-file-name)))
-              ;; Enable kernel mode for the appropriate files
-              (if (and filename
-                         (or 
-			  (string-match "/kernel" filename)
-			  (locate-dominating-file filename "Kbuild")))
-		(progn
-		  (message "Kernel mode: %s" filename)
-		  (c-set-style "linux-tabs-only"))
-		(progn
-		  (message "Xockets mode: %s" filename)
-		  (c-set-style "XOCKETS")
-		  (setq indent-tabs-mode nil))))))
-

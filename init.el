@@ -23,7 +23,8 @@
 
 (require 'cask "/usr/local/share/emacs/site-lisp/cask/cask.el")
 (cask-initialize)
-(require `pallet)
+
+(require 'pallet)
 (pallet-mode t)
 
 ;; See where we spend out time.
@@ -85,7 +86,6 @@
 
 ;; From HomeBrew.
 (require 'xcscope)
-(setq cscope-do-not-update-database t)
 
 (require 'company)
 (require 'flycheck)
@@ -128,6 +128,7 @@
 ;; org-mode
 (require 'org)
 (setq org-catch-invisible-edits 'show)
+(setq org-startup-indented t)
 
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-cc" 'org-capture)
@@ -243,7 +244,10 @@
       '(("From" . "github")
 	("To" . "github")
 	("From" . "@docs.google.com")
+	("From" . "drive-shares-noreply@google.com")
 	("From" . "phab@code.uberinternal.com")))
+
+(global-magit-file-mode 1)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -255,7 +259,7 @@
  '(org-agenda-files (quote ("/Users/alun/Documents/Org/")))
  '(package-selected-packages
    (quote
-    (protobuf-mode thrift go-direx project-explorer web-mode cov editorconfig sr-speedbar all-the-icons all-the-icons-dired neotree minimap phabricator gnus-spotlight spotlight counsel-bbdb bbdb helm-bbdb helm-company helm-cscope helm-flycheck helm-flymake helm-flyspell helm-git helm-git-files helm-git-grep helm-ispell helm-package xcscope hyde json-mode plantuml-mode cask chef-mode company electric-spacing emoji-cheat-sheet-plus epl gh gist git git-commit git-messenger gitattributes-mode gitconfig gitconfig-mode magit magit-popup vagrant markdown-mode benchmark-init boxquote confluence xml-rpc go-dlv go-eldoc flycheck-plantuml flycheck go-autocomplete go-complete go-errcheck go-gopath go-guru go-impl go-mode go-rename go-scratch golint pallet)))
+    (ac-emoji company-emoji emojify protobuf-mode thrift go-direx project-explorer web-mode cov editorconfig sr-speedbar all-the-icons all-the-icons-dired neotree minimap phabricator gnus-spotlight spotlight counsel-bbdb bbdb helm-bbdb helm-company helm-cscope helm-flycheck helm-flymake helm-flyspell helm-git helm-git-files helm-git-grep helm-ispell helm-package xcscope hyde json-mode plantuml-mode cask chef-mode company electric-spacing emoji-cheat-sheet-plus epl gh gist git git-commit git-messenger gitattributes-mode gitconfig gitconfig-mode magit magit-popup vagrant markdown-mode benchmark-init boxquote confluence xml-rpc go-dlv go-eldoc flycheck-plantuml flycheck go-autocomplete go-complete go-errcheck go-gopath go-guru go-impl go-mode go-rename go-scratch golint pallet)))
  '(send-mail-function (quote smtpmail-send-it))
  '(sgml-basic-offset 2)
  '(url-cookie-file "~/.emacs.d/cache/cookies")
