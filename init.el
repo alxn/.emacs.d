@@ -50,6 +50,18 @@
 
 (require 'ansi-color)
 (require 'compile)
+
+;(defvar compilation-minor-mode-map
+;(define-key map "\C-c\C-\" 'quit-compilation)
+
+;; (defun quit-compilation ()
+;;   "Quit the process made by the \\[compile] or \\[grep] commands."
+;;   (interactive)
+;;   (let ((buffer (compilation-find-buffer)))
+;;     (if (get-buffer-process buffer)
+;; 	(quit-process (get-buffer-process buffer))
+;;       (error "The %s process is not running" (downcase mode-name)))))
+
 (defun alun/colorize-compilation ()
   "Colorize from `compilation-filter-start' to `point'."
   (let ((inhibit-read-only t))
@@ -90,7 +102,7 @@
 (require 'company)
 (require 'flycheck)
 
-(add-hook 'after-init-hook #'global-flycheck-mode)
+;(add-hook 'after-init-hook #'global-flycheck-mode)
 
 (require 'json-mode)
 (require 'markdown-mode)
@@ -249,6 +261,8 @@
 
 (global-magit-file-mode 1)
 
+(add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++14")))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -259,7 +273,7 @@
  '(org-agenda-files (quote ("/Users/alun/Documents/Org/")))
  '(package-selected-packages
    (quote
-    (ac-emoji company-emoji emojify protobuf-mode thrift go-direx project-explorer web-mode cov editorconfig sr-speedbar all-the-icons all-the-icons-dired neotree minimap phabricator gnus-spotlight spotlight counsel-bbdb bbdb helm-bbdb helm-company helm-cscope helm-flycheck helm-flymake helm-flyspell helm-git helm-git-files helm-git-grep helm-ispell helm-package xcscope hyde json-mode plantuml-mode cask chef-mode company electric-spacing emoji-cheat-sheet-plus epl gh gist git git-commit git-messenger gitattributes-mode gitconfig gitconfig-mode magit magit-popup vagrant markdown-mode benchmark-init boxquote confluence xml-rpc go-dlv go-eldoc flycheck-plantuml flycheck go-autocomplete go-complete go-errcheck go-gopath go-guru go-impl go-mode go-rename go-scratch golint pallet)))
+    (flymake-cppcheck flymake-google-cpplint modern-cpp-font-lock flymake-puppet puppet-mode flycheck-yamllint yaml-mode visual-fill-column company-irony company-irony-c-headers flycheck-irony irony auto-complete-clang clang-format flycheck-clang-analyzer flycheck-clang-tidy groovy-imports groovy-mode ac-emoji company-emoji emojify protobuf-mode thrift go-direx project-explorer web-mode cov editorconfig sr-speedbar all-the-icons all-the-icons-dired neotree minimap phabricator counsel-bbdb bbdb helm-bbdb helm-company helm-cscope helm-flycheck helm-flymake helm-flyspell helm-git helm-git-files helm-git-grep helm-ispell xcscope hyde json-mode plantuml-mode cask chef-mode company electric-spacing emoji-cheat-sheet-plus epl gh gist git git-commit git-messenger gitattributes-mode gitconfig gitconfig-mode magit magit-popup vagrant markdown-mode benchmark-init boxquote confluence xml-rpc go-dlv go-eldoc flycheck-plantuml flycheck go-autocomplete go-complete go-errcheck go-gopath go-guru go-impl go-mode go-rename go-scratch golint pallet)))
  '(send-mail-function (quote smtpmail-send-it))
  '(sgml-basic-offset 2)
  '(url-cookie-file "~/.emacs.d/cache/cookies")
