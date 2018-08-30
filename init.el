@@ -6,7 +6,6 @@
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
 ;;; Code:
-
 ;; Setup the packaging system.
 (package-initialize)
 
@@ -257,11 +256,10 @@
 	("To" . "github")
 	("From" . "@docs.google.com")
 	("From" . "drive-shares-noreply@google.com")
+	("From" . "phabricator@uberatc.com")
 	("From" . "phab@code.uberinternal.com")))
 
 (global-magit-file-mode 1)
-
-(add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++14")))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.

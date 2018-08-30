@@ -16,6 +16,30 @@
      (case-label . 0)))
   "Uber C Style for CC-MODE")
 
+(defconst uber-cpp-style
+  '((c-basic-offset . 4)
+    (c-comment-only-line-offset . 0)
+    (c-offsets-alist
+     (statement-block-intro . +)
+     (substatement-open . 0)
+     (substatement-label . 0)
+     (label . 0)
+     (statement-cont . +)))
+  "Uber C++ Style from stroustrup")
+
+(add-hook 'c++-mode-hook
+	  (lambda () (setq flycheck-clang-language-standard "c++14")))
+
+(add-hook 'c++-mode-hook
+          (lambda ()
+	    (c-add-style "uber" uber-cpp-style t)
+	  ))
+
+;(clang-format-buffer &optional STYLE ASSUME-FILE-NAME)
+
+(add-hook 'c++-mode-hook
+          (lambda () (add-hook 'before-save-hook 'clang-format-buffer nil 'local)))
+
 ;;
 ;; LwIP Style based on:
 ;; http://lwip.wikia.com/wiki/Contributing_to_lwIP
@@ -48,9 +72,9 @@
 
 (add-hook 'c-mode-common-hook
           (lambda ()
-            ;; Add Uber style
+            ;; Add uber style
             (c-add-style
-             "UBER" uber-c-style)))
+             "uber" uber-c-style)))
 
 ;;
 ;; Linux style as required in Documentation/CodingStyle
