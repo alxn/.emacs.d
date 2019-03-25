@@ -58,7 +58,8 @@
 (setq gnus-large-newsgroup 1000)
 
 ;; Sign messages by default.
-;(add-hook 'message-setup-hook 'mml-secure-message-sign)
+(add-hook 'message-setup-hook 'mml-secure-message-sign)
+;(add-hook 'message-setup-hook 'mml-secure-message-encrypt)
 
 (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
 
