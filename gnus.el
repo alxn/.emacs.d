@@ -39,7 +39,7 @@
 (setq gnus-novice-user nil)
 
 ;; Turn on GPG
-(setq mml-secure-openpgp-signers "219ED135")
+(setq mml-secure-openpgp-signers '("219ED135"))
 ;; We want to be able to read the emails we wrote.
 (setq mml-secure-openpgp-encrypt-to-self t)
 
