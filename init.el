@@ -13,7 +13,8 @@
       (append
        (list "~/.emacs.d/elisp/"
 	     "/usr/local/share/emacs/site-lisp/"
-	     "~/.local/share/emacs/site-lisp/")
+	     "~/.local/share/emacs/site-lisp/"
+	     "/Applications/LilyPond.app/Contents/Resources/share/emacs/site-lisp/")
        load-path))
 
 (setenv "PATH" (concat (getenv "PATH") "/usr/local/bin:/Users/alun/gocode/bin"))
@@ -169,6 +170,11 @@
 (with-eval-after-load 'flycheck
   (require 'flycheck-plantuml)
   (flycheck-plantuml-setup))
+
+(require 'lilypond-mode)
+(load-file "/Applications/LilyPond.app/Contents/Resources/share/emacs/site-lisp/lilypond-init.el")
+(add-hook 'LilyPond-mode-hook 'flycheck-mode)
+(eval-after-load 'flycheck '(require 'flycheck-lilypond))
 
 ;; Go Lang
 (load-file "~/.emacs.d/go-setup.el")
