@@ -117,3 +117,6 @@
 ;; (file-exists-p (concat
 ;; 		(file-name-directory filename)
 ;; 		"Kbuild"))
+
+;;; https://emacs.stackexchange.com/questions/38822/cscope-minor-mode-not-enabled-for-c-in-emacs-25
+(cscope-setup)
