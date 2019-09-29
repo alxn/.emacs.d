@@ -32,6 +32,14 @@
 ;(require 'benchmark-init)
 ;(benchmark-init/activate)
 
+(if (getenv "UBER_HOME")
+    (progn
+      (message "Uber Mode")
+      (setq user-mail-address "alun@uber.com"))
+  (progn
+    (message "Personal Mode")
+    (setq user-mail-address "alun@badgerous.net")))
+
 ;; no obnoxious tool bar
 (if (fboundp 'tool-bar-mode)
     (tool-bar-mode -1))
@@ -295,8 +303,7 @@
  '(send-mail-function (quote smtpmail-send-it))
  '(sgml-basic-offset 2)
  '(url-cookie-file "~/.emacs.d/cache/cookies")
- '(user-full-name "Alun Evans")
- '(user-mail-address "alun@uber.com"))
+ '(user-full-name "Alun Evans"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

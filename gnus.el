@@ -13,17 +13,35 @@
 ;(require 'gnus-spotlight)
 ;(gnus-spotlight-insinuate)
 
-(setq user-mail-address "alun@uber.com"
-      user-full-name "Alun Evans")
+(if (getenv "UBER_HOME")
+    (progn
+      (message "Uber Env")
+      (setq
+       gnus-account "Uber"
+       gnus-message-archive-group "nnimap+Uber:[Gmail]/Sent Mail"
+       mml-secure-openpgp-signers '("219ED135")))
+  (progn
+    (message "Personal Env")
+    (setq
+     gnus-account "Badgerous"
+     gnus-message-archive-group "nnimap+Badgerous:[Gmail]/Sent Mail"
+     mml-secure-openpgp-signers '("F43B19AD")))
+  )
+
+(message (concat "Gnus Account: " gnus-account))
 
 (setq gnus-select-method
-      '(nnimap "Uber"
+      `(nnimap ,gnus-account
 	       (nnimap-address "imap.gmail.com")
 	       (nnimap-server-port "imaps")
 	       (nnimap-list-pattern ("INBOX" "*"))
 	       (nnimap-expunge-on-close never)
 	       (nnimap-stream ssl)
 	       (nnir-search-engine imap)))
+
+;;; Gnus Gmail search.
+(add-to-list 'nnir-imap-search-arguments `(,gnus-account . "X-GM-RAW"))
+(setq nnir-imap-default-search-key gnus-account)
 
 (setq smtpmail-smtp-server "smtp.gmail.com"
       smtpmail-smtp-service 587)
@@ -33,13 +51,10 @@
 
 (defvar gnus-gcc-mark-as-read)
 (setq gnus-gcc-mark-as-read t)
-(setq gnus-message-archive-group "nnimap+Uber:[Gmail]/Sent Mail")
 
 ; Asks anoying questions all the time.
 (setq gnus-novice-user nil)
 
-;; Turn on GPG
-(setq mml-secure-openpgp-signers '("219ED135"))
 ;; We want to be able to read the emails we wrote.
 (setq mml-secure-openpgp-encrypt-to-self t)
 
@@ -188,9 +203,6 @@
 	)
       )
 
-;;; Gnus Gmail search.
-(add-to-list 'nnir-imap-search-arguments '("Uber" . "X-GM-RAW"))
-(setq nnir-imap-default-search-key "Uber")
 
 
 ;;; %U%R%z%I%(%[%4L: %-23,23f%]%) %B
