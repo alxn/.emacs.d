@@ -40,7 +40,7 @@
   (auto-complete-mode 1)
   (add-hook 'before-save-hook 'gofmt-before-save)
   (setq
-   gofmt-command "goimports"
+   gofmt-command "/Users/alun/gocode/bin/goimports"
    tab-width 2         ; display tabs as two-spaces
    indent-tabs-mode 1  ; use hard tabs to indent
    fill-column 100)    ; set a reasonable fill width

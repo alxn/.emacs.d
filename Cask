@@ -43,6 +43,7 @@
 (depends-on "flymake-easy")
 (depends-on "flymake-google-cpplint")
 (depends-on "flymake-puppet")
+(depends-on "flymake-shellcheck")
 (depends-on "gh")
 (depends-on "gist")
 (depends-on "git")
