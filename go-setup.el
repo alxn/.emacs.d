@@ -87,11 +87,11 @@
 ;(go-guru-hl-identifier-mode)
 ;(add-hook 'go-mode-hook #'go-guru-hl-identifier-mode)
 
+;  (auto-complete-mode 1)
 ;; Golang support - from Uber
 (defun uber-go-mode-hook ()
   "Uber Golang Hook."
   (whitespace-mode -1) ; don't highlight hard tabs
-  (auto-complete-mode 1)
   (add-hook 'before-save-hook 'gofmt-before-save)
   (setq
    gofmt-command "/Users/alun/gocode/bin/goimports"
