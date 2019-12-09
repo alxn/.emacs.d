@@ -44,7 +44,7 @@
 (if (fboundp 'tool-bar-mode)
     (tool-bar-mode -1))
 
-(require 'xclip "/usr/local/share/emacs/site-lisp/xclip-mode/xclip.el")
+(require 'xclip)
 (xclip-mode 1)
 
 (set-background-color "black")
@@ -292,7 +292,7 @@
  '(org-agenda-files (quote ("/Users/alun/Documents/Org/")))
  '(package-selected-packages
    (quote
-    (flymake-shellcheck bazel-mode gotest flycheck-lilypond flymake-cppcheck flymake-google-cpplint modern-cpp-font-lock flymake-puppet puppet-mode flycheck-yamllint yaml-mode visual-fill-column company-irony company-irony-c-headers flycheck-irony irony auto-complete-clang clang-format flycheck-clang-analyzer flycheck-clang-tidy groovy-imports groovy-mode ac-emoji company-emoji emojify protobuf-mode thrift go-direx project-explorer web-mode cov editorconfig sr-speedbar all-the-icons all-the-icons-dired neotree minimap phabricator counsel-bbdb bbdb helm-bbdb helm-company helm-cscope helm-flycheck helm-flymake helm-flyspell helm-git helm-git-files helm-git-grep helm-ispell xcscope hyde json-mode plantuml-mode cask chef-mode company electric-spacing emoji-cheat-sheet-plus epl gh gist git git-commit git-messenger gitattributes-mode gitconfig gitconfig-mode magit magit-popup vagrant markdown-mode benchmark-init boxquote confluence xml-rpc go-dlv go-eldoc flycheck-plantuml flycheck go-autocomplete go-complete go-errcheck go-gopath go-guru go-impl go-mode go-rename go-scratch golint pallet)))
+    (el-autoyas go-snippets go-stacktracer yasnippet-snippets lsp-ui use-package company-lsp lsp-java lsp-mode xclip solarized-theme atom-dark-theme atom-one-dark-theme badger-theme darcula-theme github-modern-theme github-theme idea-darkula-theme flymake-shellcheck bazel-mode gotest flycheck-lilypond flymake-cppcheck flymake-google-cpplint modern-cpp-font-lock flymake-puppet puppet-mode flycheck-yamllint yaml-mode visual-fill-column company-irony company-irony-c-headers flycheck-irony irony auto-complete-clang clang-format flycheck-clang-analyzer flycheck-clang-tidy groovy-imports groovy-mode ac-emoji company-emoji emojify protobuf-mode thrift go-direx project-explorer web-mode cov editorconfig sr-speedbar all-the-icons all-the-icons-dired neotree minimap phabricator counsel-bbdb bbdb helm-bbdb helm-company helm-cscope helm-flycheck helm-flymake helm-flyspell helm-git helm-git-files helm-git-grep helm-ispell xcscope hyde json-mode plantuml-mode cask chef-mode company electric-spacing emoji-cheat-sheet-plus epl gh gist git git-commit git-messenger gitattributes-mode gitconfig gitconfig-mode magit magit-popup vagrant markdown-mode benchmark-init boxquote confluence xml-rpc go-dlv go-eldoc flycheck-plantuml flycheck go-autocomplete go-complete go-errcheck go-gopath go-guru go-impl go-mode go-rename go-scratch golint pallet)))
  '(safe-local-variable-values
    (quote
     ((eval highlight-regexp "#[A-Z]{3}"

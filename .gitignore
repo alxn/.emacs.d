@@ -13,3 +13,4 @@ bookmarks
 emojis/
 irony/
 transient/
+.lsp-session*
