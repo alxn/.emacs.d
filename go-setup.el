@@ -3,10 +3,25 @@
 ;;;  https://engdocs.uberinternal.com/go/additional_setup_pages/editors.html
 ;;; Code:
 
+(setenv "USE_SYSTEM_GO" "1")
+(setenv "GO111MODULE" "off")
+
 (use-package lsp-mode
   :ensure t
   :commands (lsp lsp-deferred)
-  :hook (go-mode . lsp-deferred))
+  :hook (go-mode . lsp-deferred)
+  :custom
+  ;; debug
+;  (lsp-print-io t)
+;  (lsp-trace t)
+;  (lsp-print-performance t)
+  (lsp-document-sync-method 'incremental) ;; none, full, incremental, or nil
+  (lsp-response-timeout 60)
+  (lsp-prefer-flymake t) ;; t(flymake), nil(lsp-ui), or :none
+  (lsp-clients-go-server-args '("--cache-style=always" "--diagnostics-style=onsave" "--format-style=goimports"))
+;  (lsp-gopls-server-args '("-rpc.trace" "-logfile" "/tmp/gopls.log"))
+  )
+
 
 ;; Set up before-save hooks to format buffer and add/delete imports.
 ;; Make sure you don't have other gofmt/goimports hooks enabled.
@@ -18,28 +33,46 @@
 ;; Optional - provides fancier overlays.
 (use-package lsp-ui
   :ensure t
-  :commands lsp-ui-mode)
+  :commands lsp-ui-mode
+  :custom
+  (lsp-ui-doc-header t)
+  (lsp-ui-doc-include-signature nil)
+  (lsp-ui-doc-max-width 120)
+  (lsp-ui-doc-position 'top) ;; top, bottom, or at-point
+  (lsp-ui-doc-max-height 30)
+  (lsp-ui-doc-use-childframe t)
+  (lsp-ui-doc-use-webkit t)
+  (lsp-ui-sideline-show-hover t)
+  (lsp-ui-sideline-show-symbol t)
+  (lsp-ui-sideline-show-code-actions t)
+)
 
 ;; Company mode is a standard completion package that works well with lsp-mode.
 (use-package company
   :ensure t
   :config
   ;; Optionally enable completion-as-you-type behavior.
-  (setq company-idle-delay 0)
+  (setq company-idle-delay 1)
   (setq company-minimum-prefix-length 1))
 
 ;; company-lsp integrates company mode completion with lsp-mode.
 ;; completion-at-point also works out of the box but doesn't support snippets.
 (use-package company-lsp
   :ensure t
-  :commands company-lsp)
+  :commands company-lsp
+  :custom
+  (company-lsp-cache-candidates t) ;; auto, t(always using a cache), or nil
+  (company-lsp-async t)
+  (company-lsp-enable-snippet t)
+  (company-lsp-enable-recompletion t)
+)
 
 (use-package lsp-treemacs
   :ensure t
   :commands lsp-treemacs-errors-list)
 
-
-;; Optional - provides snippet support.
+;; Provides snippet support.
+;; https://andreacrotti.github.io/yasnippet-snippets/snippets.html
 (use-package yasnippet
   :ensure t
   :commands yas-minor-mode
@@ -58,11 +91,6 @@
 (require 'go-mode)
 ;(add-hook 'go-mode-hook 'flycheck-mode)
 ;(require 'go-autocomplete)
-
-;(require 'auto-complete-config)
-;(ac-config-default)
-
-;(define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
 
 ;;go-guru-definition
 ;(define-key go-mode-map (kbd "M-.") 'godef-jump)
@@ -87,14 +115,11 @@
 ;(go-guru-hl-identifier-mode)
 ;(add-hook 'go-mode-hook #'go-guru-hl-identifier-mode)
 
-;  (auto-complete-mode 1)
 ;; Golang support - from Uber
 (defun uber-go-mode-hook ()
   "Uber Golang Hook."
   (whitespace-mode -1) ; don't highlight hard tabs
-  (add-hook 'before-save-hook 'gofmt-before-save)
   (setq
-   gofmt-command "/Users/alun/gocode/bin/goimports"
    tab-width 2         ; display tabs as two-spaces
    indent-tabs-mode 1  ; use hard tabs to indent
    fill-column 100)    ; set a reasonable fill width
