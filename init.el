@@ -6,9 +6,6 @@
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
 ;;; Code:
-;; Setup the packaging system.
-(package-initialize)
-
 (setq load-path
       (append
        (list "~/.emacs.d/elisp/"
@@ -17,9 +14,11 @@
 	     "/Applications/LilyPond.app/Contents/Resources/share/emacs/site-lisp/")
        load-path))
 
-(setenv "PATH" (concat (getenv "PATH") "/usr/local/bin:/Users/alun/gocode/bin"))
+(setenv "PATH" (concat (getenv "PATH") "/usr/local/bin:/Users/alun/gocode/bin" "/usr/local/bin"))
 (setq exec-path (append exec-path '("/Users/alun/gocode/bin")))
 (setq exec-path (append exec-path '("/usr/local/bin")))
+
+(setq server-socket-dir "~/.emacs.d/server")
 
 (require 'cask "/usr/local/share/emacs/site-lisp/cask/cask.el")
 (cask-initialize)
@@ -27,12 +26,23 @@
 (require 'pallet)
 (pallet-mode t)
 
+;; This is only needed once, near the top of the file
+(eval-when-compile
+  ;; Following line is not needed if use-package.el is in ~/.emacs.d
+  ;;(add-to-list 'load-path "<path where use-package is installed>")
+  (require 'use-package))
+
+;(package-initialize)
+
+(add-to-list 'package-archives
+             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+
 ;; See where we spend out time.
 ;; Use M-x benchmark-init/show-durations-<TAB>
 ;(require 'benchmark-init)
 ;(benchmark-init/activate)
 
-(if (getenv "UBER_HOME")
+(if (getenv "UBER_LDAP_UID")
     (progn
       (message "Uber Mode")
       (setq user-mail-address "alun@uber.com"))
@@ -94,12 +104,16 @@
 ;; C styles
 (load-file "~/.emacs.d/v-setup.el")
 
+(eval-when-compile
+  (defvar mac-option-modifier)
+  (defvar mac-command-modifier))
+
 (cond
    ((string-equal system-type "darwin") ; Mac OS X
     (progn (message "Mac OS X"))
     (let ((default-directory "/usr/local/share/emacs/site-lisp/"))
       (normal-top-level-add-subdirs-to-load-path))
-    (setq mac-option-modifier nil) ;; Default was meta
+    (setq mac-option-modifier 'super) ;; Default was meta
     (setq mac-command-modifier 'meta)
     )
 )
@@ -110,10 +124,8 @@
 ;; From HomeBrew.
 (require 'xcscope)
 
-(require 'company)
 (require 'flycheck)
-
-;(add-hook 'after-init-hook #'global-flycheck-mode)
+(add-hook 'after-init-hook #'global-flycheck-mode)
 
 (require 'json-mode)
 (require 'markdown-mode)
@@ -122,10 +134,10 @@
 (require 'git-messenger)
 (setq git-messenger:show-detail t)
 
-(require 'helm)
-(require 'emoji-cheat-sheet-plus)
-(require 'gh)
-(require 'gist)
+;(require 'helm)
+;(require 'emoji-cheat-sheet-plus)
+;(require 'gh)
+;(require 'gist)
 ;(require 'git-modes)
 
 ;; End From HomeBrew.
@@ -133,13 +145,13 @@
 (load-file "~/.emacs.d/backups.el")
 
 ;; saveplace
-(load-file "~/.emacs.d/saveplace.el")
+(load-file "~/.emacs.d/init-saveplace.el")
 
 ;; recentf
-(load-file "~/.emacs.d/recentf.el")
+(load-file "~/.emacs.d/init-recentf.el")
 
 ;; doxymacs
-(load-file "~/.emacs.d/doxymacs.el")
+(load-file "~/.emacs.d/init-doxymacs.el")
 
 (put 'narrow-to-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
@@ -167,10 +179,6 @@
 
 (setq frame-title-format `(,(user-login-name) "@" ,(system-name) "  [%b]" ))
 
-; http://superuser.com/questions/277956/emacs-variable-to-open-with-in-original-frame
-(setq ns-pop-up-frames nil)
-
-
 (setenv "DICTIONARY" "en_GB")
 ;; Spelling
 (load-file "~/.emacs.d/spell.el")
@@ -178,14 +186,14 @@
 ;; set up a bunch of auto-mode-alist stuff
 (load-file "~/.emacs.d/auto-mode-alist-setup.el")
 
-(with-eval-after-load 'flycheck
-  (require 'flycheck-plantuml)
-  (flycheck-plantuml-setup))
+;(with-eval-after-load 'flycheck
+;  (require 'flycheck-plantuml)
+;  (flycheck-plantuml-setup))
 
-(require 'lilypond-mode)
-(load-file "/Applications/LilyPond.app/Contents/Resources/share/emacs/site-lisp/lilypond-init.el")
-(add-hook 'LilyPond-mode-hook 'flycheck-mode)
-(eval-after-load 'flycheck '(require 'flycheck-lilypond))
+;(require 'lilypond-mode)
+;(load-file "/Applications/LilyPond.app/Contents/Resources/share/emacs/site-lisp/lilypond-init.el")
+;(add-hook 'LilyPond-mode-hook 'flycheck-mode)
+;(eval-after-load 'flycheck '(require 'flycheck-lilypond))
 
 ;; Go Lang
 (load-file "~/.emacs.d/go-setup.el")
@@ -205,8 +213,8 @@
 (add-to-list 'auto-mode-alist '("\\.gohtml\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.gotmpl\\'" . web-mode))
 
-;(require 'gnus-start)
-;(setq gnus-init-file "~/.emacs.d/init-gnus.el")
+(require 'gnus-start)
+(setq gnus-init-file "~/.emacs.d/init-gnus")
 
 (require 'bbdb)
 (bbdb-initialize 'gnus 'message 'pgp)
@@ -277,30 +285,44 @@
 	("From" . "@docs.google.com")
 	("From" . "drive-shares-noreply@google.com")
 	("From" . "phabricator@uberatc.com")
+	("From" . "jira-t3@uber.com")
 	("From" . "phab@code.uberinternal.com")))
 
-(global-magit-file-mode 1)
+;;(global-magit-file-mode 1)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(gnus-init-file "~/.emacs.d/gnus.el")
+ '(bbdb-ignore-message-alist
+   '(("From" . "github")
+     ("To" . "github")
+     ("From" . "@docs.google.com")
+     ("From" . "drive-shares-noreply@google.com")
+     ("From" . "phabricator@uberatc.com")
+     ("From" . "phab@code.uberinternal.com")
+     ("From" . "jira-t3@uber.com")))
+ '(epg-pinentry-mode 'loopback)
+ '(gnus-parameter-large-newsgroup-initial-alist nil)
  '(inhibit-startup-screen t)
- '(initial-major-mode (quote text-mode))
- '(org-agenda-files (quote ("/Users/alun/Documents/Org/")))
+ '(initial-major-mode 'text-mode)
+ '(lsp-go-codelenses
+   '((generate . t)
+     (regenerate_cgo . t)
+     (tidy . t)
+     (upgrade_dependency . t)
+     (test . t)
+     (vendor . t)))
+ '(ns-pop-up-frames nil)
+ '(org-agenda-files '("/Users/alun/Documents/Org/"))
  '(package-selected-packages
-   (quote
-    (lsp-treemacs el-autoyas go-snippets go-stacktracer yasnippet-snippets lsp-ui use-package company-lsp lsp-java lsp-mode xclip solarized-theme atom-dark-theme atom-one-dark-theme badger-theme darcula-theme github-modern-theme github-theme idea-darkula-theme flymake-shellcheck bazel-mode gotest flycheck-lilypond flymake-cppcheck flymake-google-cpplint modern-cpp-font-lock flymake-puppet puppet-mode flycheck-yamllint yaml-mode visual-fill-column company-irony company-irony-c-headers flycheck-irony irony auto-complete-clang clang-format flycheck-clang-analyzer flycheck-clang-tidy groovy-imports groovy-mode ac-emoji company-emoji emojify protobuf-mode thrift go-direx project-explorer web-mode cov editorconfig sr-speedbar all-the-icons all-the-icons-dired neotree minimap phabricator counsel-bbdb bbdb helm-bbdb helm-company helm-cscope helm-flycheck helm-flymake helm-flyspell helm-git helm-git-files helm-git-grep helm-ispell xcscope hyde json-mode plantuml-mode cask chef-mode company electric-spacing emoji-cheat-sheet-plus epl gh gist git git-commit git-messenger gitattributes-mode gitconfig gitconfig-mode magit magit-popup vagrant markdown-mode benchmark-init boxquote confluence xml-rpc go-dlv go-eldoc flycheck-plantuml flycheck go-autocomplete go-complete go-errcheck go-gopath go-guru go-impl go-mode go-rename go-scratch golint pallet)))
+   '(slack lsp-treemacs el-autoyas go-snippets go-stacktracer yasnippet-snippets lsp-ui use-package lsp-java lsp-mode xclip solarized-theme atom-dark-theme atom-one-dark-theme badger-theme darcula-theme github-modern-theme github-theme idea-darkula-theme flymake-shellcheck bazel-mode gotest flycheck-lilypond flymake-cppcheck flymake-google-cpplint modern-cpp-font-lock flymake-puppet puppet-mode flycheck-yamllint yaml-mode visual-fill-column company-irony company-irony-c-headers flycheck-irony irony auto-complete-clang clang-format flycheck-clang-analyzer flycheck-clang-tidy groovy-imports groovy-mode ac-emoji company-emoji emojify protobuf-mode thrift go-direx project-explorer web-mode cov editorconfig sr-speedbar all-the-icons all-the-icons-dired neotree minimap phabricator counsel-bbdb bbdb helm-bbdb helm-company helm-cscope helm-flycheck helm-flymake helm-flyspell helm-git helm-git-files helm-git-grep helm-ispell xcscope hyde json-mode plantuml-mode cask chef-mode company electric-spacing emoji-cheat-sheet-plus epl gh gist git git-commit git-messenger gitattributes-mode gitconfig gitconfig-mode magit magit-popup vagrant markdown-mode benchmark-init boxquote confluence xml-rpc go-dlv go-eldoc flycheck-plantuml flycheck go-autocomplete go-complete go-errcheck go-gopath go-guru go-impl go-mode go-rename go-scratch golint pallet))
  '(safe-local-variable-values
-   (quote
-    ((eval highlight-regexp "#[A-Z]{3}"
-	   (quote hi-yellow))
-     (eval highlight-regexp "\\[[0-9]+\\]"
-	   (quote hi-yellow))
-     (org-startup-truncated))))
- '(send-mail-function (quote smtpmail-send-it))
+   '((eval highlight-regexp "#[A-Z]{3}" 'hi-yellow)
+     (eval highlight-regexp "\\[[0-9]+\\]" 'hi-yellow)
+     (org-startup-truncated)))
+ '(send-mail-function 'smtpmail-send-it)
  '(sgml-basic-offset 2)
  '(url-cookie-file "~/.emacs.d/cache/cookies")
  '(user-full-name "Alun Evans"))
@@ -309,7 +331,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(lsp-ui-doc-background ((t (:background "dark gray")))))
 
 (provide 'init)
 ;;; init.el ends here

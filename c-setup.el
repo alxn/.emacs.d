@@ -79,8 +79,13 @@
 ;;
 ;; Linux style as required in Documentation/CodingStyle
 ;;
+(require 'cc-defs)
+(eval-when-compile
+  (defvar c-syntactic-element)
+  (defvar c-basic-offset))
+
 (defun c-lineup-arglist-tabs-only (ignored)
-  "Line up argument lists by tabs, not spaces"
+  "Line up argument lists by tabs, not spaces."
   (let* ((anchor (c-langelem-pos c-syntactic-element))
 	 (column (c-langelem-2nd-pos c-syntactic-element))
 	 (offset (- (1+ column) anchor))
@@ -119,4 +124,4 @@
 ;; 		"Kbuild"))
 
 ;;; https://emacs.stackexchange.com/questions/38822/cscope-minor-mode-not-enabled-for-c-in-emacs-25
-(cscope-setup)
+;; (cscope-setup)

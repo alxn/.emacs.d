@@ -1,4 +1,4 @@
-;;; package -- Summary
+;; package -- Summary
 ;;; Commentary:
 ;;;  https://engdocs.uberinternal.com/go/additional_setup_pages/editors.html
 ;;; Code:
@@ -6,22 +6,49 @@
 (setenv "USE_SYSTEM_GO" "1")
 (setenv "GO111MODULE" "off")
 
+(require 'lsp-mode)
+(require 'go-mode)
+(require 'bazel-build)
+
+(setq gc-cons-threshold 100000000)
+(setq read-process-output-max (* 1024 1024)) ;; 1mb
+
 (use-package lsp-mode
-  :ensure t
+  :hook '(go-mode . lsp-deferred)
   :commands (lsp lsp-deferred)
-  :hook (go-mode . lsp-deferred)
   :custom
   ;; debug
-;  (lsp-print-io t)
-;  (lsp-trace t)
-;  (lsp-print-performance t)
-  (lsp-document-sync-method 'incremental) ;; none, full, incremental, or nil
+  (lsp-log-io t)
+  (lsp-headerline-breadcrumb-enable nil)
+  (lsp-print-performance t)
   (lsp-response-timeout 60)
-  (lsp-prefer-flymake t) ;; t(flymake), nil(lsp-ui), or :none
-  (lsp-clients-go-server-args '("--cache-style=always" "--diagnostics-style=onsave" "--format-style=goimports"))
-;  (lsp-gopls-server-args '("-rpc.trace" "-logfile" "/tmp/gopls.log"))
+  (lsp-enable-file-watchers nil)
+  (lsp-file-watch-threshold 10000000)
+  (lsp-completion-provider :capf)
+  (lsp-idle-delay 0.500)
+;  (lsp-prefer-flymake nil) ;; t(flymake), nil(lsp-ui), or :none
+;  (lsp-clients-go-server-args '("--cache-style=always" "--diagnostics-style=onsave" "--format-style=goimports"))
+;  (lsp-gopls-server-args '("-remote=auto" "-logfile=auto" "-debug=:6060" "-remote.debug=:0" "-rpc.trace"))
+  (lsp-go-gopls-server-args '("-logfile=auto" "-debug=:0"))
+  :config
+  (lsp-register-custom-settings
+   '(("gopls.completeUnimported" t t)
+     ("gopls.staticcheck" t t)))
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-tramp-connection "gopls")
+                    :major-modes '(go-mode)
+		    :language-id "go"
+                    :remote? t
+                    :server-id 'gopls-remote))
   )
+(require 'tramp)
+(add-to-list 'tramp-remote-path "/opt/go/path/bin")
 
+;;				     (lambda () (cons lsp-go-gopls-server-path
+;;						      lsp-go-gopls-server-args)))
+
+; This is dangerous.
+;  (lsp-document-sync-method 'full) ;; none, full, incremental, or nil
 
 ;; Set up before-save hooks to format buffer and add/delete imports.
 ;; Make sure you don't have other gofmt/goimports hooks enabled.
@@ -32,7 +59,6 @@
 
 ;; Optional - provides fancier overlays.
 (use-package lsp-ui
-  :ensure t
   :commands lsp-ui-mode
   :custom
   (lsp-ui-doc-header t)
@@ -45,27 +71,15 @@
   (lsp-ui-sideline-show-hover t)
   (lsp-ui-sideline-show-symbol t)
   (lsp-ui-sideline-show-code-actions t)
-)
+  )
 
 ;; Company mode is a standard completion package that works well with lsp-mode.
 (use-package company
   :ensure t
   :config
   ;; Optionally enable completion-as-you-type behavior.
-  (setq company-idle-delay 1)
-  (setq company-minimum-prefix-length 1))
-
-;; company-lsp integrates company mode completion with lsp-mode.
-;; completion-at-point also works out of the box but doesn't support snippets.
-(use-package company-lsp
-  :ensure t
-  :commands company-lsp
-  :custom
-  (company-lsp-cache-candidates t) ;; auto, t(always using a cache), or nil
-  (company-lsp-async t)
-  (company-lsp-enable-snippet t)
-  (company-lsp-enable-recompletion t)
-)
+  (setq company-idle-delay 0.1
+        company-minimum-prefix-length 1))
 
 (use-package lsp-treemacs
   :ensure t
@@ -76,44 +90,9 @@
 (use-package yasnippet
   :ensure t
   :commands yas-minor-mode
-  :hook (go-mode . yas-minor-mode))
+  :hook '(go-mode . yas-minor-mode))
 
-(require 'lsp-mode)
-(lsp-register-custom-settings
- '(("gopls.completeUnimported" t t)
-   ("gopls.staticcheck" t t)))
-
-(use-package yasnippet
-  :ensure t
-  :commands yas-minor-mode
-  :hook (go-mode . yas-minor-mode))
-
-(require 'go-mode)
 ;(add-hook 'go-mode-hook 'flycheck-mode)
-;(require 'go-autocomplete)
-
-;;go-guru-definition
-;(define-key go-mode-map (kbd "M-.") 'godef-jump)
-;(define-key go-mode-map (kbd "M-,") 'pop-tag-mark)
-
-;(with-eval-after-load 'go-mode
-;  (require 'go-autocomplete))
-
-;(require 'go-complete)
-;(add-hook 'completion-at-point-functions 'go-complete-at-point)
-
-;(require 'go-eldoc)
-;(add-hook 'go-mode-hook 'go-eldoc-setup)
-
-;(require 'go-guru)
-
-;; Inside a buffer of Go source code, select an expression of
-;; interest, and type `C-c C-o d' (for "describe") or run one of the
-;; other go-guru-xxx commands.  If you use `menu-bar-mode', these
-;; commands are available from the Guru menu.
-
-;(go-guru-hl-identifier-mode)
-;(add-hook 'go-mode-hook #'go-guru-hl-identifier-mode)
 
 ;; Golang support - from Uber
 (defun uber-go-mode-hook ()
@@ -122,10 +101,14 @@
   (setq
    tab-width 2         ; display tabs as two-spaces
    indent-tabs-mode 1  ; use hard tabs to indent
-   fill-column 100)    ; set a reasonable fill width
+   fill-column 80)     ; set a reasonable fill width
   )
 
 (add-hook 'go-mode-hook 'uber-go-mode-hook)
+
+; https://emacs-lsp.github.io/lsp-mode/page/performance/
+(setq gc-cons-threshold 100000000)
+(setq read-process-output-max (* 1024 1024)) ;; 1mb
 
 ;; Spell check.
 (add-hook 'go-mode-hook 'flyspell-prog-mode)

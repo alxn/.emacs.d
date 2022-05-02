@@ -12,8 +12,9 @@
 ;(require 'spotlight)
 ;(require 'gnus-spotlight)
 ;(gnus-spotlight-insinuate)
+(defvar gnus-account)
 
-(if (getenv "UBER_HOME")
+(if (getenv "UBER_LDAP_UID")
     (progn
       (message "Uber Env")
       (setq

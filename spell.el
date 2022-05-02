@@ -7,14 +7,14 @@
 (cond
    ((string-equal system-type "darwin") ; Mac OS X
     (progn (message "Mac OS X Spelling"))
-    (add-to-list 'exec-path "/usr/local/Cellar/aspell/0.60.6.1_1/bin")
+    (add-to-list 'exec-path "/usr/local/Cellar/aspell/0.60.8/bin")
     (setq ispell-program-name "aspell"
           ispell-local-dictionary "british"
           ispell-dictionary "british"
           ispell-dictionary-alist
           (let ((default '("[A-Za-z]" "[^A-Za-z]" "[']" nil
                            ("-B" "-d" "english" "--dict-dir"
-                            "/usr/local/Cellar/aspell/0.60.6.1_1/lib/aspell-0.60")
+                            "/usr/local/Cellar/aspell/0.60.8/lib/aspell-0.60")
                            nil iso-8859-1)))
             `((nil ,@default)
               ("british" ,@default))))
