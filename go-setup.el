@@ -8,7 +8,6 @@
 
 (require 'lsp-mode)
 (require 'go-mode)
-(require 'bazel-build)
 
 (setq gc-cons-threshold 100000000)
 (setq read-process-output-max (* 1024 1024)) ;; 1mb
@@ -95,6 +94,7 @@
 ;(add-hook 'go-mode-hook 'flycheck-mode)
 
 ;; Golang support - from Uber
+;  (define-key esc-map "z" 'bazel-build)
 (defun uber-go-mode-hook ()
   "Uber Golang Hook."
   (whitespace-mode -1) ; don't highlight hard tabs
