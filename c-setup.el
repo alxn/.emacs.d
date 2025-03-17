@@ -57,7 +57,7 @@
 (setq load-path
       (append
        (list "~/.emacs.d/elisp/"
-	     "/usr/local/share/emacs/site-lisp/"
+	     "/opt/homebrew/share/emacs/site-lisp/"
 	     "~/.local/share/emacs/site-lisp/")
        load-path))
 

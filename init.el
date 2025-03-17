@@ -9,24 +9,24 @@
 (setq load-path
       (append
        (list "~/.emacs.d/elisp/"
-	     "/usr/local/share/emacs/site-lisp/"
-	     "~/.local/share/emacs/site-lisp/"
-	     "/Applications/LilyPond.app/Contents/Resources/share/emacs/site-lisp/")
+	     "/opt/homebrew/Cellar/cask/0.9.0"
+	     "/opt/homebrew/share/emacs/site-lisp"
+	     "~/.local/share/emacs/site-lisp/")
        load-path))
 
-;(setenv "PATH" (concat (getenv "PATH") "/usr/local/bin:/Users/alun/Uber/gocode/bin" "/usr/local/bin"))
+;(setenv "PATH" (concat (getenv "PATH") "/opt/homebrew/bin:/Users/alun/Uber/gocode/bin"))
 ;(setq exec-path (append exec-path '("/Users/alun/Uber/gocode/bin")))
-;(setq exec-path (append exec-path '("/usr/local/bin")))
 
 (setq server-socket-dir "~/.emacs.d/server")
 
-(require 'cask "/usr/local/share/emacs/site-lisp/cask/cask.el")
-(cask-initialize)
+(package-initialize)
 
-(require 'pallet)
-(pallet-mode t)
+(load "/opt/homebrew/Cellar/cask/0.9.0/cask.el")
+;(require 'cask "/opt/homebrew/Cellar/cask/0.9.0/cask")
+(cask--initialize (expand-file-name "~/.emacs.d"))
 
-(use-package direnv)
+;(require 'pallet)
+;(pallet-mode t)
 
 ;; This is only needed once, near the top of the file
 (eval-when-compile
@@ -34,7 +34,8 @@
   ;;(add-to-list 'load-path "<path where use-package is installed>")
   (require 'use-package))
 
-;(package-initialize)
+
+(use-package direnv)
 
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/") t)
@@ -113,7 +114,7 @@
 (cond
    ((string-equal system-type "darwin") ; Mac OS X
     (progn (message "Mac OS X"))
-    (let ((default-directory "/usr/local/share/emacs/site-lisp/"))
+    (let ((default-directory "/opt/homebrew/share/emacs/site-lisp/"))
       (normal-top-level-add-subdirs-to-load-path))
     (setq mac-option-modifier 'super) ;; Default was meta
     (setq mac-command-modifier 'meta)
@@ -124,7 +125,7 @@
 (load-file "~/.emacs.d/sgml-setup.el")
 
 ;; From HomeBrew.
-(require 'xcscope)
+;(require 'xcscope)
 
 (require 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
@@ -153,10 +154,9 @@
 (load-file "~/.emacs.d/init-recentf.el")
 
 ;; doxymacs
-(load-file "~/.emacs.d/init-doxymacs.el")
+;(load-file "~/.emacs.d/init-doxymacs.el")
 
 (put 'narrow-to-region 'disabled nil)
-(put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 
 (define-key esc-map "*" 'revert-buffer)
@@ -319,7 +319,7 @@
  '(ns-pop-up-frames nil)
  '(org-agenda-files '("/Users/alun/Documents/Org/"))
  '(package-selected-packages
-   '(bazel direnv slack lsp-treemacs el-autoyas go-snippets go-stacktracer yasnippet-snippets lsp-ui use-package lsp-java lsp-mode xclip solarized-theme atom-dark-theme atom-one-dark-theme badger-theme darcula-theme github-modern-theme github-theme idea-darkula-theme flymake-shellcheck bazel-mode gotest flycheck-lilypond flymake-cppcheck flymake-google-cpplint modern-cpp-font-lock flymake-puppet puppet-mode flycheck-yamllint yaml-mode visual-fill-column company-irony company-irony-c-headers flycheck-irony irony auto-complete-clang clang-format flycheck-clang-analyzer flycheck-clang-tidy groovy-imports groovy-mode ac-emoji company-emoji emojify protobuf-mode thrift go-direx project-explorer web-mode cov editorconfig sr-speedbar all-the-icons all-the-icons-dired neotree minimap phabricator counsel-bbdb bbdb helm-bbdb helm-company helm-cscope helm-flycheck helm-flymake helm-flyspell helm-git helm-git-files helm-git-grep helm-ispell xcscope hyde json-mode plantuml-mode cask chef-mode company electric-spacing emoji-cheat-sheet-plus epl gh gist git git-commit git-messenger gitattributes-mode gitconfig gitconfig-mode magit magit-popup vagrant markdown-mode benchmark-init boxquote confluence xml-rpc go-dlv go-eldoc flycheck-plantuml flycheck go-autocomplete go-complete go-errcheck go-gopath go-guru go-impl go-mode go-rename go-scratch golint pallet))
+   '(flymake-go bazel direnv slack lsp-treemacs el-autoyas go-snippets go-stacktracer yasnippet-snippets lsp-ui use-package lsp-java lsp-mode xclip solarized-theme atom-dark-theme atom-one-dark-theme badger-theme darcula-theme idea-darkula-theme flymake-shellcheck bazel-mode gotest flycheck-lilypond flymake-cppcheck flymake-google-cpplint modern-cpp-font-lock flymake-puppet puppet-mode flycheck-yamllint yaml-mode visual-fill-column company-irony company-irony-c-headers flycheck-irony irony auto-complete-clang clang-format flycheck-clang-analyzer flycheck-clang-tidy groovy-imports groovy-mode ac-emoji company-emoji emojify protobuf-mode thrift go-direx project-explorer web-mode cov editorconfig sr-speedbar all-the-icons all-the-icons-dired neotree minimap phabricator counsel-bbdb bbdb helm-bbdb helm-company helm-cscope helm-flycheck helm-flymake helm-flyspell helm-git helm-git-files helm-git-grep helm-ispell xcscope hyde json-mode plantuml-mode cask chef-mode company electric-spacing emoji-cheat-sheet-plus epl gh gist git git-commit git-messenger gitattributes-mode gitconfig gitconfig-mode magit magit-popup vagrant markdown-mode benchmark-init boxquote confluence xml-rpc go-dlv go-eldoc flycheck-plantuml flycheck go-autocomplete go-complete go-errcheck go-gopath go-guru go-impl go-mode go-rename go-scratch golint))
  '(safe-local-variable-values
    '((eval highlight-regexp "#[A-Z]{3}" 'hi-yellow)
      (eval highlight-regexp "\\[[0-9]+\\]" 'hi-yellow)
@@ -337,3 +337,4 @@
 
 (provide 'init)
 ;;; init.el ends here
+(put 'upcase-region 'disabled nil)
